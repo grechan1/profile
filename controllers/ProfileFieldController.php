@@ -5,6 +5,7 @@ namespace backend\modules\profile\controllers;
 use Yii;
 use backend\modules\profile\models\ProfileField;
 use backend\modules\profile\models\Profile;
+use backend\modules\product\models\ProductProfile;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -71,11 +72,15 @@ class ProfileFieldController extends Controller
     public function actionCreate()
     {
         $model = new ProfileField();
-        $profile=new Profile();
+
         //$fieldTypeList=ArrayHelper::map($model->profile_filed_type, 'id', 'name');
         //$scheme=Yii::$app->db->schema;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             //$model->field_type=$this->fieldType($model->field_type);
+            if ($model->section==1)
+                $profile=new Profile();
+            if ($model->section==2)
+                $profile=new ProductProfile();
             $sql = 'ALTER TABLE '.$profile->tableName().' ADD `'.$model->varname.'` ';
             $sql .= $model->field_type;
             if (
