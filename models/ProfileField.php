@@ -4,6 +4,7 @@ namespace backend\modules\profile\models;
 
 use Yii;
 use backend\modules\profile\models\ProfileFieldQuery;
+use backend\modules\product\models\ProductProfileQuery;
 
 /**
  * This is the model class for table "profile_field".
@@ -45,6 +46,9 @@ class ProfileField extends \yii\db\ActiveRecord
     const CHANGE_MODERATOR = 2;
     const CHANGE_ADMIN = 3;
 
+    const SECTION_PROFILE = 1;
+    const SECTION_PRODUCT = 2;
+
     public static function tableName()
     {
         return 'profile_field';
@@ -59,11 +63,12 @@ class ProfileField extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
     public function rules()
     {
         return [
             [['varname', 'title', 'field_type'], 'required'],
-            [['required', 'position', 'visible', 'change'], 'integer'],
+            [['required', 'position', 'visible', 'change', 'section'], 'integer'],
             ['varname', 'match', 'pattern' => '/^[A-Za-z_0-9]+$/u','message' => "Variable name may consist of A-z, 0-9, underscores, begin with a letter."],
             ['varname', 'unique', 'message' => "This field already exists."],
             [['varname', 'field_type'], 'string', 'max' => 50],
@@ -87,6 +92,7 @@ class ProfileField extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'section' => 'Section',
             'varname' => 'Varname',
             'title' => 'Title',
             'field_type' => 'Field Type',
@@ -171,6 +177,10 @@ class ProfileField extends \yii\db\ActiveRecord
                 self::VISIBLE_ONLY_OWNER => 'Only owner',
                 self::VISIBLE_NO => 'Hidden',
             ],
+            'section' => [
+                self::SECTION_PROFILE => 'Profile user',
+                self::SECTION_PRODUCT => 'Profile product',
+            ],
             'change' => [
                 self::CHANGE_GUEST => 'all',
                 self::CHANGE_USER => 'Registered users',
@@ -183,8 +193,12 @@ class ProfileField extends \yii\db\ActiveRecord
         else
             return isset($_items[$type]) ? $_items[$type] : false;
     }
-    public static function find()
+    public static function findProfileUser()
     {
-        return new ProfileFieldQuery(get_called_class());
+            return new ProfileFieldQuery(get_called_class());
+    }
+    public static function findProfileProduct()
+    {
+        return new ProductProfileQuery(get_called_class());
     }
 }

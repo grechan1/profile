@@ -16,22 +16,22 @@ class ProfileFieldQuery extends ActiveQuery
 {
     public function forAll ()
     {
-        return $this->andWhere(['visible' => ProfileField::VISIBLE_ALL]);
+        return $this->andWhere(['section'=>1, 'visible' => ProfileField::VISIBLE_ALL]);
     }
     public function forUser ()
     {
-        return $this->andWhere(['visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL]]);
+        return $this->andWhere(['section'=>1, 'visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL]]);
     }
     public function forOwner ()
     {
-        return $this->andWhere(['visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL, ProfileField::VISIBLE_ONLY_OWNER]]);
+        return $this->andWhere(['section'=>1, 'visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL, ProfileField::VISIBLE_ONLY_OWNER]]);
     }
     public function forRegistration ()
     {
-        return $this->andWhere(['required' => ProfileField::REQUIRED_YES_SHOW_REG]);
+        return $this->andWhere(['section'=>1, 'required' => ProfileField::REQUIRED_YES_SHOW_REG]);
     }
     public function forAdmin ()
     {
-        return $this->andWhere(['visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL, ProfileField::VISIBLE_ONLY_OWNER], 'required' => ProfileField::REQUIRED_YES_SHOW_REG]);
+        return $this->andWhere(['section'=>1, 'visible' => [ProfileField::VISIBLE_REGISTER_USER, ProfileField::VISIBLE_ALL, ProfileField::VISIBLE_ONLY_OWNER], 'required' => ProfileField::REQUIRED_YES_SHOW_REG]);
     }
 }

@@ -116,17 +116,17 @@ class Profile extends \yii\db\ActiveRecord
     public function getFields() {
         if ($this->model_reg){
             if (!$this->_model)
-                $this->_model=ProfileField::find()->forRegistration()->all();
+                $this->_model=ProfileField::findProfileUser()->forRegistration()->all();
         } else {
             if (Yii::$app->user->isGuest)
                 if (!$this->_model)
-                    $this->_model=ProfileField::find()->forAll()->all();
+                    $this->_model=ProfileField::findProfileUser()->forAll()->all();
             if (!Yii::$app->user->isGuest)
                 if (!$this->_model)
-                    $this->_model=ProfileField::find()->forUser()->all();
+                    $this->_model=ProfileField::findProfileUser()->forUser()->all();
             if (Yii::$app->user->id==1)
                 if (!$this->_model)
-                    $this->_model=ProfileField::find()->forAdmin()->all();
+                    $this->_model=ProfileField::findProfileUser()->forAdmin()->all();
         }
         return $this->_model;
     }
